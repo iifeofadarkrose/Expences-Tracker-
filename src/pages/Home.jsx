@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
-
+import { writeUserData } from "../firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -23,6 +23,8 @@ export const Home = ({ user }) => {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
+        writeUserData(user.uid, "New User", email, "");
+
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -53,43 +55,61 @@ export const Home = ({ user }) => {
   }
   return (
     <section>
-      <h2>Homepage</h2>
-      <form>
-        {isSignUpActive && <legend>Sign Up</legend>}
-        {!isSignUpActive && <legend>Sign In</legend>}
-
-        <fieldset>
-          <ul>
-            <li>
-              <label htmlFor="email">Email</label>
-              <input type="text" id="email" onChange={handleEmailChange} />
-            </li>
-            <li>
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                onChange={handlePasswordChange}
-              />
-            </li>
-          </ul>
-
-          {isSignUpActive && (
-            <button type="button" onClick={handleSignUp}>
-              Sign Up
-            </button>
-          )}
+      {/* <h2 className="flex justify-center text-2xl">Homepage</h2> */}
+      <div className="absolute top-[40%] left-[40%] right-[60%] border rounded-lg">
+        <form className="p-4 m-2 w-[500px] h-[300px]">
+          <div className="font-serif text-3xl border rounded-md w-[120px] p-1 text-teal-100 bg-slate-600">
+            {isSignUpActive && <legend>Sign Up</legend>}
+            {!isSignUpActive && <legend>Sign In</legend>}
+          </div>
+          <fieldset className="flex justify-center">
+            <ul className="w-full py-4">
+              <li className="w-[200px]">
+                <label htmlFor="email" className="text-xl font-serif ">
+                  Email
+                </label>
+                <input type="text" id="email" onChange={handleEmailChange} 
+                className="w-[200px] border rounded-lg p-1 text-lg" />
+              </li>
+              <li className="w-[200px]">
+                <label htmlFor="password" className="text-xl font-serif text-gra">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  onChange={handlePasswordChange} 
+                  className="w-[200px] border rounded-lg p-1 text-lg"
+                />
+              </li>
+            </ul>
+          </fieldset>{" "}
+          <div className="w-full">
+            {isSignUpActive && (
+              <button
+                className="p-2 border rounded-lg w-[200px] h-[50px]"
+                type="button"
+                onClick={handleSignUp}
+              >
+                Sign Up
+              </button>
+            )}
+            {!isSignUpActive && (
+              <button
+                className="p-2 border rounded-lg w-200px"
+                type="button"
+                onClick={handleSignIn}
+              >
+                Sign In
+              </button>
+            )}{" "}
+          </div>
+          {isSignUpActive && <a onClick={handleMethodChange}>Login</a>}
           {!isSignUpActive && (
-            <button type="button" onClick={handleSignIn}>
-              Sign In
-            </button>
+            <a onClick={handleMethodChange}>Create an account</a>
           )}
-        </fieldset>
-        {isSignUpActive && <a onClick={handleMethodChange}>Login</a>}
-        {!isSignUpActive && (
-          <a onClick={handleMethodChange}>Create an account</a>
-        )}
-      </form>
+        </form>
+      </div>
     </section>
   );
 };
