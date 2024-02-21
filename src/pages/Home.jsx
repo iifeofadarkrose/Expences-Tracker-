@@ -1,6 +1,6 @@
-/* eslint-disable react/prop-types */
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import PropTypes from "prop-types"; 
 import { writeUserData } from "../firebase";
 import {
   createUserWithEmailAndPassword,
@@ -13,6 +13,8 @@ export const Home = ({ user }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignUpActive, setIsSignUpActive] = useState(true);
+  const navigate = useNavigate(); // Используем хук useNavigate для программного перехода
+
   const handleMethodChange = () => {
     setIsSignUpActive(!isSignUpActive);
   };
@@ -24,7 +26,7 @@ export const Home = ({ user }) => {
         const user = userCredential.user;
         console.log(user);
         writeUserData(user.uid, "New User", email, "");
-
+        navigate("/private", { state: { uid: user.uid } }); // Программный переход на страницу Private
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -39,6 +41,7 @@ export const Home = ({ user }) => {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
+        navigate("/private", { state: { uid: user.uid } }); // Программный переход на страницу Private
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -49,13 +52,12 @@ export const Home = ({ user }) => {
 
   const handleEmailChange = (event) => setEmail(event.target.value);
   const handlePasswordChange = (event) => setPassword(event.target.value);
-
   if (user) {
-    return <Navigate to="/private"></Navigate>;
+    writeUserData(user.uid, "New User", user.email, "");
+    return <Navigate to="/private" state={{ uid: user.uid }} />;
   }
   return (
     <section>
-      {/* <h2 className="flex justify-center text-2xl">Homepage</h2> */}
       <div className="absolute top-[40%] left-[40%] right-[60%] border rounded-lg">
         <form className="p-4 m-2 w-[500px] h-[300px]">
           <div className="font-serif text-3xl border rounded-md w-[120px] p-1 text-teal-100 bg-slate-600">
@@ -112,4 +114,8 @@ export const Home = ({ user }) => {
       </div>
     </section>
   );
+};
+
+Home.propTypes = {
+  user: PropTypes.object,
 };

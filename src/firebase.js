@@ -1,33 +1,62 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getDatabase, ref, set } from "firebase/database";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getDatabase, ref, set, get } from "firebase/database";
+import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_API_KEY,
-  authDomain: import.meta.env.AUTH_DOMAIN,
-  databaseURL: import.meta.env.DATA_BASE_URL,
-  projectId: import.meta.env.PROJECT_ID,
-  storageBucket: import.meta.env.STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.MESSAGING,
-  appId: import.meta.env.APP_ID
+  apiKey: "AIzaSyDKQ24fuxn6VfYFPyCADZhuqL9YvhIAvkg",
+  authDomain: "expences-tracker-f2d0a.firebaseapp.com",
+  databaseURL: "https://expences-tracker-f2d0a-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "expences-tracker-f2d0a",
+  storageBucket: "expences-tracker-f2d0a.appspot.com",
+  messagingSenderId: "877273857368",
+  appId: "1:877273857368:web:e59c380171b81ad263b92d"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
-// Функция для записи данных пользователя в базу данных
+const db = getDatabase();
+export const db2 = getFirestore(app)
 function writeUserData(userId, name, email, imageUrl) {
-  const db = getDatabase();
   const reference = ref(db, "users/" + userId);
 
   set(reference, {
     username: name,
     email: email,
     profile_picture: imageUrl,
-  });
+  })
+    .then(() => {
+      console.log("User data written successfully");
+    })
+    .catch((error) => {
+      console.error("Error writing user data:", error);
+    });
 }
 
-export { app, auth, writeUserData };
+async function getUserData(userId) {
+  try {
+    const userRef = ref(db, `users/${userId}`);
+    const snapshot = await get(userRef);
+
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      console.log("No data available for this user");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    throw error;
+  }
+}
+
+export { app, auth, writeUserData, getUserData };
+
+// Слушаем изменения в аутентификации пользователя
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // Если пользователь вошел в систему, записываем данные в базу данных
+    writeUserData(user.uid, "New User", user.email, "");
+  }
+});
