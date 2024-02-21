@@ -1,4 +1,3 @@
-
 Project Description:
 
 🚀 This project is a dynamic todo list application powered by modern web technologies, including React.js and Firebase. Users can easily manage their tasks with intuitive features and real-time synchronization.
@@ -19,7 +18,7 @@ Technologies Used:
 
 🌐 Firebase: Firebase serves as the backend infrastructure for the application, providing services such as user authentication and real-time database management.
 
-🎨 HTML/CSS: HTML and CSS are used for structuring and styling the user interface, ensuring a visually appealing and user-friendly experience.
+🎨 Tailwind CSS: Tailwind CSS is used for styling the user interface, providing a utility-first approach for rapid development and easy customization of styles.
 
 How to Run:
 
