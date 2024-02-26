@@ -33,7 +33,6 @@ export const Home = ({ user }) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
         writeUserData(user.uid, "New User", email, "");
         navigate("/private", { state: { uid: user.uid } });
       })
@@ -50,7 +49,6 @@ export const Home = ({ user }) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
         navigate("/private", { state: { uid: user.uid } });
       })
       .catch((error) => {
