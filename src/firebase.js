@@ -5,13 +5,13 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDKQ24fuxn6VfYFPyCADZhuqL9YvhIAvkg",
-  authDomain: "expences-tracker-f2d0a.firebaseapp.com",
-  databaseURL: "https://expences-tracker-f2d0a-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "expences-tracker-f2d0a",
-  storageBucket: "expences-tracker-f2d0a.appspot.com",
-  messagingSenderId: "877273857368",
-  appId: "1:877273857368:web:e59c380171b81ad263b92d"
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_DATA_BASE_URL,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
