@@ -12,6 +12,7 @@
   "dependencies": {
     "chart.js": "^4.4.1",
     "firebase": "^10.8.0",
+    "netlify-cli": "^17.17.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",

@@ -19,7 +19,7 @@ const Todo = ({ todo, toggleComplete, deleteTodo }) => {
           {todo.text}
         </p>
       </div>
-      <button onClick={() => deleteTodo(todo.id)}>{<FaRegTrashAlt />}</button>
+      <button onClick={() => deleteTodo(todo.id)}>{<FaRegTrashAlt className='hover:fill-red-400'/>}</button>
     </li>
   );
 };

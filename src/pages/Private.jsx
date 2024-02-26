@@ -19,8 +19,6 @@ import 'chart.js/auto';
 export const Private = () => {
   const handleSignOut = () => {
     signOut(auth)
-      .then(() => console.log("Sign Out"))
-      .catch((error) => console.log(error));
   };
 
   const style = {
@@ -34,17 +32,19 @@ export const Private = () => {
     count: `text-center p-2 text-gray-700`,
     loaderContainer: `fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black bg-opacity-50 z-50`,
     loader: `text-center`,
+    error: `text-red-500 text-sm mt-1`, // Стили для сообщения об ошибке
   };
   
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(''); // Состояние для сообщения об ошибке
 
   // Create todo
   const createTodo = async (e) => {
     e.preventDefault(e);
     if (input === '') {
-      alert('Please enter a valid todo');
+      setError('Please enter a valid todo'); // Устанавливаем сообщение об ошибке
       return;
     }
     try {
@@ -53,6 +53,7 @@ export const Private = () => {
         completed: false,
       });
       setInput('');
+      setError(''); // Сбрасываем сообщение об ошибке
     } catch (error) {
       console.error('Error creating todo:', error);
     }
@@ -142,7 +143,10 @@ export const Private = () => {
         <form onSubmit={createTodo} className={style.form}>
           <input
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => {
+              setInput(e.target.value);
+              setError(''); // Сбрасываем сообщение об ошибке при изменении значения в инпуте
+            }}
             className={style.input}
             type='text'
             placeholder='Add Todo'
@@ -151,6 +155,7 @@ export const Private = () => {
             <AiOutlinePlus size={30} />
           </button>
         </form>
+        {error && <p className={style.error}>{error}</p>} {/* Отображаем сообщение об ошибке */}
         {isLoading ? (
           <div className={style.loaderContainer}>
             <Discuss
